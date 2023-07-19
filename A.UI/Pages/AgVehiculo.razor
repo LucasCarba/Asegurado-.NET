@@ -1,0 +1,77 @@
+@page "/AgVehiculos"
+
+@using Microsoft.AspNetCore.Components;
+@using A.Aplicacion.Entidades; 
+@using A.Aplicacion.UseCases;
+
+@inject AgregarVehiculoUseCase AgregarVehiculoUseCase
+@inject ModificarVehiculoUseCase ModificarVehiculoUseCase
+@inject NavigationManager Navegador;
+<body>
+ <div class="titulo">
+    <h3>Agregar o Editar vehiculos</h3>
+    <br>
+    <div class="aclaracion">
+        <ol>
+            <li><h5> Si desea ingresar un Vehiculo llene el primer formulario.</h5></li>
+            <li> <h5> Si desea editar un vehiculo, llene el segundo formulario.</h5></li>
+        </ol>
+    </div>
+</div>
+<br> <br>
+<div id="todo">
+<form id="agregar">
+    <h3>1 - Agregar</h3>
+    <div class="form-group">
+        <p>Dominio</p>
+            <input type="text"  required @bind="_vehiculo.Dominio" placeholder="Dominio" class="form-control" />
+        <p>Marca</p>
+            <input type="text" required @bind="_vehiculo.Marca" placeholder="Marca" class="form-control"/>
+        <p>Anio Fabricacion</p>
+            <input type="number" required @bind="_vehiculo.AnioFabricacion" placeholder="Modelo" class="form-control"/>
+        <p>Id del Titular</p>
+            <input type="number" required @bind="_vehiculo.TitularId" placeholder="Id Titular" class="form-control"/>
+        <br>
+        <button class="btn btn-dark" @onclick="Aceptar"> Aceptar </button>
+    </div>
+</form>
+<br>
+
+<form id="Editar">
+    <h3>2 - Editar</h3>
+    <div class="form-group">
+        <p>ID del vehiculo que desea modificar</p>
+            <input type="number" required @bind="_vehiculoe.Id" placeholder="Id" class="form-control"/>
+        <p>Dominio</p>
+            <input type="text" required @bind="_vehiculoe.Dominio" placeholder="Dominio" class="form-control"/>
+        <p>Marca</p>
+            <input type="text" required @bind="_vehiculoe.Marca" placeholder="Marca" class="form-control"/>
+        <p>Anio Fabricacion</p>
+            <input type="number" required @bind="_vehiculoe.AnioFabricacion" placeholder="Modelo" class="form-control"/>
+        <p>Id del titular</p>
+            <input type="number" required @bind="_vehiculoe.TitularId" placeholder="Id Titular" class="form-control"/>
+        <br>
+        <button class="btn btn-dark" @onclick="Editar"> Aceptar </button>
+    </div>
+    </form>
+</div>
+</body>
+
+@code {
+//-----------AGREGAR VEHICULO--------------
+Vehiculo _vehiculo = new Vehiculo();
+Vehiculo _vehiculoe = new Vehiculo();
+async Task Aceptar()
+    {
+    await AgregarVehiculoUseCase.Ejecutar(_vehiculo);
+    _vehiculo = new Vehiculo();
+    Navegador.NavigateTo("vehiculos");
+    }
+async Task Editar() {
+    await ModificarVehiculoUseCase.Ejecutar(_vehiculoe);
+    _vehiculoe = new Vehiculo();
+    Navegador.NavigateTo("vehiculos");
+}
+
+
+}

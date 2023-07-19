@@ -1,0 +1,85 @@
+@page "/AgTitular"
+
+@using Microsoft.AspNetCore.Components;
+@using A.Aplicacion.Entidades; 
+@using A.Aplicacion.UseCases;
+
+@inject AgregarTitularUseCase AgregarTitularUseCase
+@inject ModificarTitularUseCase ModificarTitularUseCase
+@inject NavigationManager Navegador;
+<body>
+ <div class="titulo">
+    <h3>Agregar o Editar titulares</h3>
+    <br>
+    <div class="aclaracion">
+        <ol>
+            <li><h5> Si desea ingresar un titular llene el primer formulario.</h5></li>
+            <li> <h5> Si desea editar un titular, llene el segundo formulario.</h5></li>
+        </ol>
+    </div>
+</div>
+<br> <br>
+<div id="todo">
+<form id="agregar">
+    <h3>1 - Agregar</h3>
+    <div class="form-group">
+        <p>DNI</p>
+            <input type="text"  required @bind="_titular.DNI" placeholder="DNI" class="form-control" />
+        <p>Apellido</p>
+            <input type="text" required @bind="_titular.Apellido" placeholder="Apellido" class="form-control"/>
+        <p>Nombre</p>
+            <input type="text" required @bind="_titular.Nombre" placeholder="Nombre" class="form-control"/>
+        <p>Telefono</p>
+            <input type="number" required @bind="_titular.Telefono" placeholder="Telefono" class="form-control"/>
+        <p>Direccion</p>
+            <input type="text" required @bind="_titular.Direccion" placeholder="Direccion" class="form-control"/>
+        <p>E-Mail</p>
+            <input type="email" required @bind="_titular.CorreoElectronico" placeholder="user@gmail.com" class="form-control"/>
+        <br>
+        <button class="btn btn-dark" @onclick="Aceptar"> Aceptar </button>
+    </div>
+</form>
+<br>
+
+<form id="Editar">
+    <h3>2 - Editar</h3>
+    <div class="form-group">
+        <p>ID del titular que desea modificar</p>
+            <input type="number" required @bind="_titulare.Id" placeholder="Id" class="form-control"/>
+        <p>DNI</p>
+            <input type="text"  required @bind="_titulare.DNI" placeholder="DNI" class="form-control" />
+        <p>Apellido</p>
+            <input type="text" required @bind="_titulare.Apellido" placeholder="Apellido" class="form-control"/>
+        <p>Nombre</p>
+            <input type="text" required @bind="_titulare.Nombre" placeholder="Nombre" class="form-control"/>
+        <p>Telefono</p>
+            <input type="number" required @bind="_titulare.Telefono" placeholder="Telefono" class="form-control"/>
+        <p>Direccion</p>
+            <input type="text" required @bind="_titulare.Direccion" placeholder="Direccion" class="form-control"/>
+        <p>E-Mail</p>
+            <input type="email" required @bind="_titulare.CorreoElectronico" placeholder="user@gmail.com" class="form-control"/>
+        <br>
+        <button class="btn btn-dark" @onclick="Editar"> Aceptar </button>
+    </div>
+    </form>
+</div>
+</body>
+
+@code {
+//-----------AGREGAR VEHICULO--------------
+Titular _titular = new Titular();
+Titular _titulare = new Titular();
+async Task Aceptar()
+    {
+    await AgregarTitularUseCase.Ejecutar(_titular);
+    _titular = new Titular();
+    Navegador.NavigateTo("titulares");
+    }
+async Task Editar() {
+    await ModificarTitularUseCase.Ejecutar(_titulare);
+    _titulare = new Titular();
+    Navegador.NavigateTo("titulares");
+}
+
+
+}

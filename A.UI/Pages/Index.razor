@@ -1,0 +1,49 @@
+﻿@page "/"
+@using Microsoft.AspNetCore.Components;
+@using A.Aplicacion.Entidades; 
+@using A.Aplicacion.UseCases;
+
+@inject NavigationManager Navegador;
+
+<PageTitle>Index</PageTitle>
+
+<h1 class="Titulo">ASEGURADORA</h1>
+<br> <br> <br> <br>
+
+
+<body>
+<ul class="lista">
+    <li><button class="btn btn-secondary" @onclick="Vehiculo"> Vehiculo</button></li>
+    <li><button class="btn btn-secondary" @onclick="Titular"> Titular</button></li>
+    <li><button class="btn btn-secondary" @onclick="Tercero"> Tercero</button></li>
+    <li><button class="btn btn-secondary" @onclick="Poliza"> Poliza</button></li>
+    <li><button class="btn btn-secondary" @onclick="Siniestro"> Siniestro</button></li>
+</ul>
+
+    
+</body>
+<footer> <p> |-| Carballo, Lucas. |-|  Giacoia, Pedro |-|   </p> </footer>
+@code {
+protected void Titular()
+    {
+        Navegador.NavigateTo("titulares");
+}
+protected void Poliza()
+    {
+        Navegador.NavigateTo("polizas");
+    }
+protected void Siniestro()
+    {
+        Navegador.NavigateTo("siniestros");
+}
+protected void Tercero()
+    {
+         Navegador.NavigateTo("terceros");
+}
+protected void Vehiculo()
+    {
+        Navegador.NavigateTo("vehiculos");
+}
+
+
+}

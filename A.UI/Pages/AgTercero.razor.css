@@ -1,0 +1,46 @@
+body {
+    background-color: white;
+}
+.aclaracion li {
+
+    font-size: 25px;
+}
+.titulo {
+    color: rgb(71, 1, 88); 
+    font-size: 10px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+.aclaracion {
+    background-color: rgb(71, 1, 88);
+    color: white;
+    padding: 15px;
+  font-size: 5px;
+  font-weight: bold;
+}
+
+
+#todo {
+    display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  
+}
+#agregar {
+    width: 45%;
+    color: rgb(71, 1, 88);
+    background-color: white;
+
+}
+
+#Editar {
+    width: 45%;
+    color: rgb(71, 1, 88);
+    background-color: white;
+}
+
+.form-control {
+    margin-bottom: 15px;
+    width: 30%;
+    display: block;
+}
+

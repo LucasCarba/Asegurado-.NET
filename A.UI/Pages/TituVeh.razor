@@ -1,0 +1,45 @@
+@page "/tituVeh"
+@using Microsoft.AspNetCore.Components;
+@using A.Aplicacion.Entidades; 
+@inject NavigationManager Navegador;
+
+@inject ListarTitularConVehiculoUseCase ListarTitularConVehiculoUseCase
+<br><br>
+<h1>TABLA DE TITULARES CON SUS RESPECTIVOS VEHICULOS</h1> <br><br>
+<h5>A continuacion se detallaran , ordenadamente, los id de los titulares, y los detalles de los vehiculos que posee.</h5>
+<br><br>
+<table class="table">
+    <thead>
+        <tr class="encabezado">
+            <th>Id del Titular</th>
+            <th>Dominio de sus vehiculos</th>
+        </tr>
+    </thead>
+<tbody>
+    
+@foreach (var ti in _lista)
+    {
+        <tr class="resto">
+            <td>@ti.Id</td>
+            <ul>
+                @foreach(var a in ti.vehiculos)
+                {
+                    <td>@a.Dominio - </td>
+                }
+            </ul>
+        </tr>
+    }
+    </tbody>
+</table>
+<br><br><br><br>
+@code {
+    //-------LISTAR VEHICULOS------------
+List<Titular> _lista = new List<Titular>();
+List<Titular> _titulares = new List<Titular>();
+List<Vehiculo> _vehiculos = new List<Vehiculo>();
+
+    protected override void  OnInitialized()
+    {
+        _lista =  ListarTitularConVehiculoUseCase.Ejecutar(_vehiculos);
+    }
+}

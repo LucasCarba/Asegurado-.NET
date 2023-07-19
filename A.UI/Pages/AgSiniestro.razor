@@ -1,0 +1,81 @@
+@page "/AgSiniestro"
+
+@using Microsoft.AspNetCore.Components;
+@using A.Aplicacion.Entidades; 
+@using A.Aplicacion.UseCases;
+
+@inject AgregarSiniestroUseCase AgregarSiniestroUseCase
+@inject ModificarSiniestroUseCase ModificarSiniestroUseCase
+@inject NavigationManager Navegador;
+<body>
+ <div class="titulo">
+    <h3>Agregar o Editar Sinietro</h3>
+    <br>
+    <div class="aclaracion">
+        <ol>
+            <li><h5> Si desea ingresar un Sinietro llene el primer formulario.</h5></li>
+            <li><h5> Si desea editar un Sinietro, llene el segundo formulario.</h5></li>
+        </ol>
+    </div>
+</div>
+<br> <br>
+<div id="todo">
+<form id="agregar">
+    <h3>1 - Agregar</h3>
+    <div class="form-group">
+        <p>ID POLIZA</p>
+            <input type="number" required @bind="_siniestro.PolizaId" placeholder="PolizaId" class="form-control"/>
+        <p>Fecha ingreso</p>
+            <input type="data" required @bind="_siniestro.FechaIngreso" placeholder="FechaIngreso" class="form-control"/>
+        <p>Fecha ocurrencia</p>
+            <input type="data" required @bind="_siniestro.FechaOcurrencia" placeholder="FechaOcurrencia" class="form-control"/>
+        <p>Direccion</p>
+            <input type="text" required @bind="_siniestro.Direccion" placeholder="Direccion" class="form-control"/>
+        <p>Descripcion</p>
+            <input type="text" required @bind="_siniestro.Descripcion" placeholder="Descripcion" class="form-control"/>
+        <br>
+        <button class="btn btn-dark" @onclick="Aceptar"> Aceptar </button>
+    </div>
+</form>
+<br>
+
+<form id="Editar">
+    <h3>2 - Editar</h3>
+    <div class="form-group">
+        <p>Id</p>
+            <input type="number"  required @bind="_siniestroe.Id" placeholder="Id" class="form-control" />
+        <p>ID POLIZA</p>
+            <input type="number" required @bind="_siniestroe.PolizaId" placeholder="PolizaId" class="form-control"/>
+        <p>Fecha ingreso</p>
+            <input type="data" required @bind="_siniestroe.FechaIngreso" placeholder="FechaIngreso" class="form-control"/>
+        <p>Fecha ocurrencia</p>
+            <input type="data" required @bind="_siniestroe.FechaOcurrencia" placeholder="FechaIngreso" class="form-control"/>
+        <p>Direccion</p>
+            <input type="text" required @bind="_siniestroe.Direccion" placeholder="Direccion" class="form-control"/>
+        <p>Descripcion</p>
+            <input type="text" required @bind="_siniestroe.Descripcion" placeholder="Descripcion" class="form-control"/>
+        <br>
+        <button class="btn btn-dark" @onclick="Editar"> Aceptar </button>
+    </div>
+    </form>
+</div>
+</body>
+
+@code {
+//-----------AGREGAR--------------
+Siniestro _siniestro = new Siniestro();
+Siniestro _siniestroe = new Siniestro();
+async Task Aceptar()
+    {
+    await AgregarSiniestroUseCase.Ejecutar(_siniestro);
+    _siniestro = new Siniestro();
+    Navegador.NavigateTo("siniestros");
+    }
+async Task Editar() {
+    await ModificarSiniestroUseCase.Ejecutar(_siniestroe);
+    _siniestroe = new Siniestro();
+    Navegador.NavigateTo("siniestros");
+}
+
+
+}

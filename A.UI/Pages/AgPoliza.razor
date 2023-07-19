@@ -1,0 +1,93 @@
+@page "/AgPoliza"
+
+@using Microsoft.AspNetCore.Components;
+@using A.Aplicacion.Entidades; 
+@using A.Aplicacion.UseCases;
+
+@inject AgregarPolizaUseCase AgregarPolizaUseCase
+@inject ModificarPolizaUseCase ModificarPolizaUseCase
+@inject NavigationManager Navegador;
+<body>
+ <div class="titulo">
+    <h3>Agregar o Editar Polizas</h3>
+    <br>
+    <div class="aclaracion">
+        <ol>
+            <li><h5> Si desea ingresar un Poliza llene el primer formulario.</h5></li>
+            <li> <h5> Si desea editar un Poliza, llene el segundo formulario.</h5></li>
+        </ol>
+    </div>
+</div>
+<br> <br>
+<div id="todo">
+<form id="agregar">
+    <h3>1 - Agregar</h3>
+    <div class="form-group">
+
+
+        <p>ID del Vehiculo</p>
+            <input type="text" required @bind="_poliza.VehiculoId" placeholder="VehiculoID" class="form-control"/>
+        <p>Valor Asegurado</p>
+            <input type="number" required @bind="_poliza.ValorAsegurado" placeholder="ValorAsegurado" class="form-control"/>
+        <p>Franquicia</p>
+            <input type="text" required @bind="_poliza.Franquicia" placeholder="Franquicia" class="form-control"/>
+        <p>Tipo Cobertura</p>
+        <h6> Ingresar alguna de estas dos opciones:
+                TR --> TODO RIESGO
+                RC --> RESPONSABILIDAD CIVIL
+        </h6>
+            <input type="text" required @bind="_poliza.TipoCobertura" placeholder="TipoCobertura" class="form-control"/>
+        <p>FechaInicioVigencia</p>
+            <input type="data" required @bind="_poliza.FechaInicioVigencia" placeholder="FechaInicioVigencia" class="form-control"/>
+        <br>
+        <p>FechaFinVigencia</p>
+            <input type="data" required @bind="_poliza.FechaFinVigencia" placeholder="FechaFinVigencia" class="form-control"/>
+        <br>
+        <button class="btn btn-dark" @onclick="Aceptar"> Aceptar </button>
+    </div>
+</form>
+<br>
+
+<form id="Editar">
+    <h3>2 - Editar</h3>
+    <div class="form-group">
+                <p>Id</p>
+            <input type="number"  required @bind="_polizae.Id" placeholder="ID" class="form-control" />
+        <p>ID del Vehiculo</p>
+            <input type="text" required @bind="_polizae.VehiculoId" placeholder="VehiculoID" class="form-control"/>
+        <p>Valor Asegurado</p>
+            <input type="number" required @bind="_polizae.ValorAsegurado" placeholder="ValorAsegurado" class="form-control"/>
+        <p>Franquicia</p>
+            <input type="text" required @bind="_polizae.Franquicia" placeholder="Franquicia" class="form-control"/>
+        <p>Tipo Cobertura</p>
+            <input type="text" required @bind="_polizae.TipoCobertura" placeholder="TipoCobertura" class="form-control"/>
+        <p>FechaInicioVigencia</p>
+            <input type="data" required @bind="_polizae.FechaInicioVigencia" placeholder="FechaInicioVigencia" class="form-control"/>
+        <br>
+        <p>FechaFinVigencia</p>
+            <input type="data" required @bind="_polizae.FechaFinVigencia" placeholder="FechaFinVigencia" class="form-control"/>
+        <br>
+        <button class="btn btn-dark" @onclick="Editar"> Aceptar </button>
+    </div>
+    </form>
+</div>
+</body>
+
+@code {
+//-----------AGREGAR VEHICULO--------------
+Poliza _poliza = new Poliza();
+Poliza _polizae = new Poliza();
+async Task Aceptar()
+    {
+    await AgregarPolizaUseCase.Ejecutar(_poliza);
+    _poliza = new Poliza();
+    Navegador.NavigateTo("polizas");
+    }
+async Task Editar() {
+    await ModificarPolizaUseCase.Ejecutar(_polizae);
+    _polizae = new Poliza();
+    Navegador.NavigateTo("polizas");
+}
+
+
+}

@@ -1,0 +1,68 @@
+@page "/terceros"
+
+@using Microsoft.AspNetCore.Components;
+@using A.Aplicacion.Entidades; 
+
+@inject NavigationManager Navegador;
+@inject EliminarTerceroUseCase EliminarTerceroUseCase
+@inject ListarTercerosUseCase ListarTercerosUseCase
+
+<h2>TABLA DE TERCEROS</h2>
+<table class="table">
+    <thead>
+        <tr class="encabezado">
+            <th>ID</th>
+            <th>DNI</th>
+            <th>APELLIDO</th>
+            <th>NOMBRE</th>
+            <th>TELEFONO</th>
+            <th>ASEGURADORA</th>
+            <th>ID SINIESTRO</th>
+             <th>ELIMINAR</th>
+        </tr>
+    </thead>
+
+    
+@foreach (var t in _lista)
+    {
+        <tr class="resto">
+            <td>@t.Id</td>
+            <td>@t.DNI</td>
+            <td>@t.Apellido</td>
+            <td>@t.Nombre</td>
+            <td>@t.Telefono</td>
+            <td>@t.Aseguradora</td>
+            <td>@t.SiniestroId</td>
+            <td>
+                <button class="btn btn-warning" @onclick="()=>Eliminar(t)">
+                <span class="oi oi-trash"></span>
+                </button>
+            </td>
+        </tr>
+    }
+</table>
+<br> <br> <br> <br>
+<button class="btn btn-light" @onclick="AggT"> AGREGAR/EDITAR</button>
+
+@code {
+    //-------LISTAR TITULAR------------
+List<Tercero> _lista = new List<Tercero>();
+    protected async override Task OnInitializedAsync ()
+    {
+        _lista = await ListarTercerosUseCase.Ejecutar();
+    }
+    //-------ELIMINAR TITULAR------------
+    private async Task Eliminar(Tercero t)
+    {
+        if (t != null)
+            {
+            await EliminarTerceroUseCase.Ejecutar(t.Id);
+            _lista = await ListarTercerosUseCase.Ejecutar(); 
+            }
+    }
+    protected void AggT()
+    {
+        Navegador.NavigateTo("AgTercero");
+}
+
+}

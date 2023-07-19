@@ -1,0 +1,85 @@
+@page "/AgTercero"
+
+@using Microsoft.AspNetCore.Components;
+@using A.Aplicacion.Entidades; 
+@using A.Aplicacion.UseCases;
+
+@inject AgregarTerceroUseCase AgregarTerceroUseCase
+@inject ModificarTerceroUseCase ModificarTerceroUseCase
+@inject NavigationManager Navegador;
+<body>
+ <div class="titulo">
+    <h3>Agregar o Editar terceros</h3>
+    <br>
+    <div class="aclaracion">
+        <ol>
+            <li><h5> Si desea ingresar un tercero llene el primer formulario.</h5></li>
+            <li> <h5> Si desea editar un tercero, llene el segundo formulario.</h5></li>
+        </ol>
+    </div>
+</div>
+<br> <br>
+<div id="todo">
+<form id="agregar">
+    <h3>1 - Agregar</h3>
+    <div class="form-group">
+        <p>DNI</p>
+            <input type="text"  required @bind="_tercero.DNI" placeholder="DNI" class="form-control" />
+        <p>Apellido</p>
+            <input type="text" required @bind="_tercero.Apellido" placeholder="Apellido" class="form-control"/>
+        <p>Nombre</p>
+            <input type="text" required @bind="_tercero.Nombre" placeholder="Nombre" class="form-control"/>
+        <p>Telefono</p>
+            <input type="number" required @bind="_tercero.Telefono" placeholder="Telefono" class="form-control"/>
+        <p>Direccion</p>
+            <input type="text" required @bind="_tercero.Aseguradora" placeholder="Aseguradora" class="form-control"/>
+        <p>ID Siniestro</p>
+            <input type="number" required @bind="_tercero.SiniestroId" placeholder="Siniestro" class="form-control"/>
+        <br>
+        <button class="btn btn-dark" @onclick="Aceptar"> Aceptar </button>
+    </div>
+</form>
+<br>
+
+<form id="Editar">
+    <h3>2 - Editar</h3>
+    <div class="form-group">
+        <p>ID del tercero que desea modificar</p>
+            <input type="number" required @bind="_terceroe.Id" placeholder="Id" class="form-control"/>
+        <p>DNI</p>
+            <input type="text"  required @bind="_terceroe.DNI" placeholder="DNI" class="form-control" />
+        <p>Apellido</p>
+            <input type="text" required @bind="_terceroe.Apellido" placeholder="Apellido" class="form-control"/>
+        <p>Nombre</p>
+            <input type="text" required @bind="_terceroe.Nombre" placeholder="Nombre" class="form-control"/>
+        <p>Telefono</p>
+            <input type="number" required @bind="_terceroe.Telefono" placeholder="Telefono" class="form-control"/>
+        <p>Direccion</p>
+            <input type="text" required @bind="_terceroe.Aseguradora" placeholder="Aseguradora" class="form-control"/>
+        <p>ID Siniestro</p>
+            <input type="number" required @bind="_terceroe.SiniestroId" placeholder="Siniestro" class="form-control"/>
+        <br>
+        <button class="btn btn-dark" @onclick="Editar"> Aceptar </button>
+    </div>
+    </form>
+</div>
+</body>
+
+@code {
+//-----------AGREGAR VEHICULO--------------
+Tercero _tercero = new Tercero();
+Tercero _terceroe = new Tercero();
+async Task Aceptar()
+    {
+    await AgregarTerceroUseCase.Ejecutar(_tercero);
+    _tercero = new Tercero();
+    Navegador.NavigateTo("terceros");
+    }
+async Task Editar() {
+    await ModificarTerceroUseCase.Ejecutar(_terceroe);
+    _terceroe = new Tercero();
+    Navegador.NavigateTo("terceros");
+}
+
+
+}

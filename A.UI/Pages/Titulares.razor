@@ -1,0 +1,68 @@
+@page "/titulares"
+
+@using Microsoft.AspNetCore.Components;
+@using A.Aplicacion.Entidades; 
+
+@inject NavigationManager Navegador;
+@inject EliminarTitularUseCase EliminarTitularUseCase
+@inject ListarTitularesUseCase ListarTitularesUseCase
+
+<h2>TABLA DE TITULARES</h2>
+<table class="table">
+    <thead>
+        <tr class="encabezado">
+            <th>ID</th>
+            <th>DNI</th>
+            <th>APELLIDO</th>
+            <th>NOMBRE</th>
+            <th>TELEFONO</th>
+            <th>DIRECCION</th>
+            <th>CORREO</th>
+             <th>ELIMINAR</th>
+        </tr>
+    </thead>
+
+    
+@foreach (var t in _lista)
+    {
+        <tr class="resto">
+            <td>@t.Id</td>
+            <td>@t.DNI</td>
+            <td>@t.Apellido</td>
+            <td>@t.Nombre</td>
+            <td>@t.Telefono</td>
+            <td>@t.Direccion</td>
+            <td>@t.CorreoElectronico</td>
+            <td>
+                <button class="btn btn-warning" @onclick="()=>Eliminar(t)">
+                <span class="oi oi-trash"></span>
+                </button>
+            </td>
+        </tr>
+    }
+</table>
+<br> <br> <br> <br>
+<button class="btn btn-light" @onclick="Agg"> AGREGAR/EDITAR</button>
+
+@code {
+    //-------LISTAR TITULAR------------
+List<Titular> _lista = new List<Titular>();
+    protected async override Task OnInitializedAsync ()
+    {
+        _lista = await ListarTitularesUseCase.Ejecutar();
+    }
+    //-------ELIMINAR TITULAR------------
+    private async Task Eliminar(Titular t)
+    {
+        if (t != null)
+            {
+            await EliminarTitularUseCase.Ejecutar(t.Id);
+            _lista = await ListarTitularesUseCase.Ejecutar(); 
+            }
+    }
+    protected void Agg()
+    {
+        Navegador.NavigateTo("AgTitular");
+}
+
+}

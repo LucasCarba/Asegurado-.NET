@@ -1,0 +1,67 @@
+@page "/siniestros"
+
+@using Microsoft.AspNetCore.Components;
+@using A.Aplicacion.Entidades; 
+
+@inject NavigationManager Navegador;
+@inject ListarSiniestrosUseCase ListarSiniestrosUseCase
+@inject EliminarSiniestroUseCase EliminarSiniestroUseCase
+
+
+<h2>TABLA DE SINIESTROS</h2>
+<table class="table">
+    <thead>
+        <tr class="encabezado">
+            <th>ID</th>
+            <th>POLIZA ID</th>
+            <th>FECHA INGRESO</th>
+            <th>FECHA OCURRENCIA</th>
+            <th>DIRECCION</th>
+            <th>DESCRIPCION</th>
+            <th>ELIMINAR</th>
+        </tr>
+    </thead>
+
+    
+@foreach (var s in _lista)
+    {
+        <tr class="resto">
+            <td>@s.Id</td>
+            <td>@s.PolizaId</td>
+            <td>@s.FechaIngreso</td>
+            <td>@s.FechaOcurrencia</td>
+            <td>@s.Direccion</td>
+            <td>@s.Descripcion</td>
+            <td>
+                <button class="btn btn-warning" @onclick="()=>Eliminar(s)">
+                <span class="oi oi-trash"></span>
+                </button>
+            </td>
+        </tr>
+    }
+</table>
+<br> <br> <br> <br>
+<button class="btn btn-light" @onclick="AggS"> AGREGAR/EDITAR</button>
+
+@code {
+    //-------LISTAR ------------
+    List<Siniestro> _lista = new List<Siniestro>();
+    protected async override Task OnInitializedAsync ()
+    {
+        _lista = await ListarSiniestrosUseCase.Ejecutar();
+    }
+    //-------ELIMINAR ------------
+    private async Task Eliminar(Siniestro s)
+    {
+        if (s != null)
+            {
+            await EliminarSiniestroUseCase.Ejecutar(s.Id);
+            _lista = await ListarSiniestrosUseCase.Ejecutar(); 
+            }
+    }
+    protected void AggS()
+    {
+        Navegador.NavigateTo("AgSiniestro");
+}
+
+}

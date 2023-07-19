@@ -1,0 +1,69 @@
+@page "/polizas"
+
+@using Microsoft.AspNetCore.Components;
+@using A.Aplicacion.Entidades; 
+
+@inject NavigationManager Navegador;
+@inject ListarPolizasUseCase ListarPolizasUseCase
+@inject EliminarPolizaUseCase EliminarPolizaUseCase
+
+
+<h2>TABLA DE POLIZA</h2>
+<table class="table">
+    <thead>
+        <tr class="encabezado">
+            <th>ID</th>
+            <th>VEHICULO ID</th>
+            <th>VALOR ASEG</th>
+            <th>FRANQUICIA</th>
+            <th>TIPO COBERTURA</th>
+            <th>FECHA INICIO</th>
+            <th>FECHA FIN</th>
+             <th>ELIMINAR</th>
+        </tr>
+    </thead>
+
+    
+@foreach (var p in _lista)
+    {
+        <tr class="resto">
+            <td>@p.Id</td>
+            <td>@p.VehiculoId</td>
+            <td>@p.ValorAsegurado</td>
+            <td>@p.Franquicia</td>
+            <td>@p.TipoCobertura</td>
+            <td>@p.FechaInicioVigencia</td>
+            <td>@p.FechaFinVigencia</td>
+            <td>
+                <button class="btn btn-warning" @onclick="()=>Eliminar(p)">
+                <span class="oi oi-trash"></span>
+                </button>
+            </td>
+        </tr>
+    }
+</table>
+<br> <br> <br> <br>
+<button class="btn btn-light" @onclick="AggT"> AGREGAR/EDITAR</button>
+
+@code {
+    //-------LISTAR ------------
+    List<Poliza> _lista = new List<Poliza>();
+    protected async override Task OnInitializedAsync ()
+    {
+        _lista = await ListarPolizasUseCase.Ejecutar();
+    }
+    //-------ELIMINAR ------------
+    private async Task Eliminar(Poliza p)
+    {
+        if (p != null)
+            {
+            await EliminarPolizaUseCase.Ejecutar(p.Id);
+            _lista = await ListarPolizasUseCase.Ejecutar(); 
+            }
+    }
+    protected void AggT()
+    {
+        Navegador.NavigateTo("AgPoliza");
+}
+
+}

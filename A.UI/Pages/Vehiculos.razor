@@ -1,0 +1,63 @@
+@page "/vehiculos"
+@using Microsoft.AspNetCore.Components;
+@using A.Aplicacion.Entidades; 
+
+@inject NavigationManager Navegador;
+@inject EliminarVehiculoUseCase EliminarVehiculoUseCase
+@inject ListarVehiculoUseCase ListarVehiculoUseCase
+
+<table class="table">
+    <thead>
+        <tr class="encabezado">
+            <th>Id</th>
+            <th>Dominio</th>
+            <th>Marca</th>
+            <th>Modelo</th>
+            <th>Id del Titular</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+<tbody>
+    
+@foreach (var ve in _lista)
+    {
+        <tr class="resto">
+            <td>@ve.Id</td>
+            <td>@ve.Dominio</td>
+            <td>@ve.Marca</td>
+            <td>@ve.AnioFabricacion</td>
+            <td>@ve.TitularId</td>
+            <td>
+                <button class="btn btn-warning" @onclick="()=>Eliminar(ve)">
+                <span class="oi oi-trash"></span>
+                </button>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+<br><br><br><br>
+<button class="btn btn-light" @onclick="Agg"> AGREGAR/EDITAR</button>
+
+@code {
+    //-------LISTAR VEHICULOS------------
+List<Vehiculo> _lista = new List<Vehiculo>();
+    protected async override Task OnInitializedAsync ()
+    {
+        _lista = await ListarVehiculoUseCase.Ejecutar();
+    }
+    //-------ELIMINAR VEHICULO------------
+    private async Task Eliminar(Vehiculo ve)
+    {
+        if (ve != null)
+            {
+            await EliminarVehiculoUseCase.Ejecutar(ve.Id);
+            _lista = await ListarVehiculoUseCase.Ejecutar(); //se actualiza la lista de Vehiculos
+            }
+    }
+     protected void Agg()
+    {
+        Navegador.NavigateTo("AgVehiculos");
+}
+
+}
